@@ -1,0 +1,104 @@
+
+            <div th:if="${cate.cateGroup=='community'}" class="top_nav">
+                <h2 class="h2nav">
+                    <!-- community={notice,today,cook,cs,faq}-->
+                    <img th:if="${cate.cateName=='notice'}" th:src="@{/images/sub_nav_tit_cate5_tit1.png}" alt="공지사항">
+                     <img th:if="${cate.cateName=='menu'}" th:src="@{/images/sub_nav_tit_cate5_tit2.png}" alt="오늘의식단">
+                     <img th:if="${cate.cateName=='chef'}" th:src="@{/images/sub_nav_tit_cate5_tit3.png}" alt="나도요리사">
+                     <img th:if="${cate.cateName=='cs'}" th:src="@{/images/sub_nav_tit_cate5_tit4.png}" alt="1:1고객문의">
+                     <img th:if="${cate.cateName=='faq'}" th:src="@{/images/sub_nav_tit_cate5_tit5.png}" alt="자주묻는질문">
+                </h2>
+                <p class="location">
+                    <img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                    <span>HOME </span>
+                    <span>커뮤니티 </span>
+                    <strong th:if="${cate.cateName=='notice'}">공지사항</strong>
+                    <strong th:if="${cate.cateName=='menu'}">오늘의식단</strong>
+                    <strong th:if="${cate.cateName=='chef'}">나도요리사</strong>
+                    <strong th:if="${cate.cateName=='cs'}">1:1고객문의</strong>
+                    <strong th:if="${cate.cateName=='faq'}">자주묻는질문</strong>
+                </p>
+            </div>
+
+            <div th:if="${cate.cateGroup=='croptalk'}" class="top_nav">
+
+                <nav>
+                    <h2 class="h2nav">
+                        <img th:if="${cate.cateName=='story'}" th:src="@{/images/sub_nav_tit_cate3_tit1.png}" alt="농작물이야기">
+                        <img th:if="${cate.cateName=='grow'}" th:src="@{/images/sub_nav_tit_cate3_tit2.png}" alt="텃밭가꾸기">
+                        <img th:if="${cate.cateName=='school'}" th:src="@{/images/sub_nav_tit_cate3_tit3.png}" alt="귀농학교">
+                    </h2>
+                    <p class="location">
+                        <img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                        <span>HOME </span>
+                        <span>농작물이야기 </span>
+                        <strong th:if="${cate.cateName == 'story'}">농작물이야기</strong>
+                        <strong th:if="${cate.cateName == 'grow'}">텃밭가꾸기</strong>
+                        <strong th:if="${cate.cateName == 'school'}">귀농학교</strong>
+                    </p><!-- location end -->
+                </nav>
+            </div>
+            <div th:if="${cate.cateGroup=='event'}" class="top_nav">
+                <nav>
+                    <h2 class="h2nav">
+                        <img th:src="@{/images/sub_nav_tit_cate4_tit1.png}" alt="이벤트">
+                    </h2>
+                    <p class="location">
+                        <img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                        <span>HOME</span>
+                        <span>이벤트</span>
+                        <strong>이벤트</strong>
+                    </p>
+                </nav>
+            </div>
+            <div th:if="${cate.cateGroup=='introduction'}" class="top_nav">
+                <nav>
+                    <h2 class="h2nav">
+                        <img th:if="${cate.cateName=='intro'}" th:src="@{/images/sub_nav_tit_cate1_tit1.png}" alt="인사말">
+                        <img th:if="${cate.cateName=='direct'}" th:src="@{/images/sub_nav_tit_cate1_tit2.png}" alt="찾아오시는길">
+                    </h2>
+                    <p class="location">
+                        <img  th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                        <span>HOME </span>
+                        <span>팜스토리소개 </span>
+                        <strong th:if="${cate.cateName=='intro'}">인사말</strong>
+                        <strong th:if="${cate.cateName=='direct'}">찾아오시는길</strong>
+                    </p>
+                </nav>
+            </div>
+
+            <div th:if="${cate.cateGroup=='market'}" class="top_nav">
+                <nav>
+                    <h2 class="h2nav">
+                        <img th:src="@{/images/sub_nav_tit_cate2_tit1.png}" alt="장보기">
+                    </h2>
+                    <p class="location">
+                        <img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                        <span>HOME </span>
+                        <span>장보기 </span>
+                        <strong>장보기</strong>
+                    </p>
+                </nav>
+            </div>
+
+            <div th:if="${cate.cateGroup=='myinfo'}" class="top_nav">
+
+                <nav>
+                    <h2 class="h2nav">
+                        <img th:if="${cate.cateName=='cart'}" th:src="@{/images/myinfo/myinfo_nav_tit1.png}" alt="장바구니">
+                        <img th:if="${cate.cateName=='orderitem'}" th:src="@{/images/myinfo/myinfo_nav_tit2.png}" alt="주문내역">
+                        <img th:if="${cate.cateName=='myinfo'}" th:src="@{/images/myinfo/myinfo_nav_tit3.png}" alt="정보수정">
+                    </h2>
+                    <p class="location">
+                        <img th:src="@{/images/sub_page_nav_ico.gif}" alt="메뉴">
+                        <span>HOME </span>
+                        <span>나의정보 </span>
+                        <strong th:if="${cate.cateName == 'cart'}">장바구니</strong>
+                        <strong th:if="${cate.cateName == 'orderitem'}">주문내역</strong>
+                        <strong th:if="${cate.cateName == 'myinfo'}">정보수정</strong>
+                    </p><!-- location end -->
+                </nav>
+            </div>
+
+
+

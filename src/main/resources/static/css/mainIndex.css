@@ -1,0 +1,312 @@
+
+/* 글꼴 통일 */
+main p {
+    font-size: 12px;
+    line-height: 18px;
+    color: #666666;
+}
+main a {
+    font-size: 12px;
+    line-height: 18px;
+    color: #666666;
+}
+
+main td {
+    font-size: 11px;
+    line-height: 12px;
+    color: #666666;
+}
+
+/* 광고 슬라이드 */
+.main_adver {
+    position: relative;
+    height: 312px;
+    overflow: hidden;
+    background-image: url(../images/main_slide_img1.jpg);
+    bottom: 20px;
+    top: 0px;
+    margin-bottom: 20px;
+}
+/* 광고 슬라이드 이미지 */
+.main_adver>img {
+    position: absolute;
+    left: 40px;
+    top: 40px;
+    z-index: 4;
+}
+/* 광고 슬라이드 사이드 이미지 */
+.main_adver>.sideAd {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 230px;
+    height: 312px;
+}
+.slideImgs{
+    position: relative;
+    width:100%;
+}
+
+.slideImgs > li{
+    position: absolute;
+    transition: left 0.5s ease-out;
+}
+
+.slideImgs > li:nth-child(1){
+    left: 0;
+    top: 0;
+}
+.slideImgs > li:nth-child(2){
+    left: 100%;
+    top: 0;
+}
+.slideImgs > li:nth-child(3){
+    left: 100%;
+    top: 0;
+}
+
+.slideImg > img{
+    object-fit: cover;
+}
+
+.sideAd >img{
+    z-index: 5;
+}
+
+.sideAd > img:nth-child(1){
+    position: absolute;
+    right: 10px;
+    top:10px;
+}
+
+.sideAd > img:nth-child(2){
+    position: absolute;
+    left:10px;
+    top: 31px;
+}
+
+.sideAd > img:nth-child(3){
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+}
+.sideAd > img:nth-child(4){
+    position: absolute;
+    z-index: 4;
+    right: 0px;
+    top: 0px;
+}
+
+/* 장보기 */
+.main_shopping {
+    overflow: hidden;
+}
+/* 장보기 리스트 */
+.shopping_list {
+    width: auto;
+}
+/* 상품 객체 */
+.shopping_list>a {
+    width: 16.3%;
+    height: 236px;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    float: left;
+    margin-top: 10px;
+    margin-right: 3.6px;
+    display: flex;
+    justify-content: center;
+}
+/* 상품 정렬 */
+.product {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+/* 상품 이미지 */
+.product>img {
+    margin-bottom: 10px;
+    width: 140px;
+    height: 140px;
+}
+/* 상품 종류 */
+.product>p:nth-child(2) {
+    color: gray;
+    font-weight: 300;
+    font-size: 13px;
+}
+/* 상품 이름 */
+.product>p:nth-child(3) {
+    font-weight: 500;
+    color: black;
+    font-size: 13px;
+}
+/* 상품 무게 */
+.product>p:nth-child(4) {
+    font-weight: 500;
+    color: black;
+    font-size: 13px;
+}
+/* 기존가격, 할인가 */
+.pricediscount {
+    display: flex;
+    margin-left: 5px;
+    color: black;
+}
+
+.price,
+.discount {
+    margin-right: 3px;
+    margin-top: -5px;
+    font-size: 12px;
+}
+/* 기존가격 */
+.price {
+    text-decoration: line-through;
+}
+/* 할인가 */
+.discount {
+    color: red;
+}
+/* 최종가격 */
+.priceResult {
+    font-weight: 1000;
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: black;
+}
+/* 오늘의 식단, 나도 요리사 */
+.main_comm_banner {
+    margin: 10px 0px;
+    width: 100%;
+    height: 74px;
+    overflow: hidden;
+}
+
+.main_comm_banner>a {
+    float: left;
+    display: block;
+    padding: 16px;
+    width: 50%;
+    height: auto;
+    box-sizing: border-box;
+}
+
+.main_comm_banner>a:nth-child(1) {
+    background-image: url("../images/main_banner_sub1_bg.jpg");
+}
+
+.main_comm_banner>a:nth-child(2) {
+    background-image: url("../images/main_banner_sub2_bg.jpg");
+}
+
+/* 커뮤니티 목록 */
+.main_container {
+    height: 186px;
+}
+
+.main_container>div {
+    width: 33%;
+    float: left;
+}
+
+.main_container>div>a {
+    display: block;
+    margin: 16px 0;
+}
+
+.main_container>div>img {
+    display: inline-block;
+}
+/* 커뮤니티 목록 테이블 */
+.commuList {
+    float: right;
+    margin-right: 12px;
+}
+/* 리스트 제목 */
+.commuList tr>td:nth-child(2) {
+    display: block;
+    width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* 정보 */
+.info>div {
+    float: left;
+}
+
+.introduce {
+    width: 386px;
+}
+
+.introduce>img {
+    margin: 5px 0;
+    margin-bottom: 16px;
+}
+.tel {
+    overflow: hidden;
+}
+
+.tel>* {
+    float: left;
+}
+.tel>p {
+    display: inline-block;
+}
+
+.tel>img {
+    margin-right: 16px;
+}
+/* 버튼 */
+.commBtns {
+    margin-top: 10px;
+}
+/* 계좌안내 */
+.bank {
+    width: 230px;
+    padding-left: 16px;
+    border-left: 1px solid #d7d7d7;
+    border-right: 1px solid #d7d7d7;
+    box-sizing: border-box;
+    height: 140px;
+}
+
+.bank>img {
+    margin: 5px 0;
+    margin-bottom: 16px;
+}
+/* 공지사항 */
+.notice {
+
+    padding: 0px 10px;
+    width: 352px;
+
+    box-sizing: border-box;
+}
+
+.notice>img {
+    margin: 5px 0;
+    margin-bottom: 10px;
+}
+
+.notice table {
+    margin-left: 8px;
+}
+
+.notice tr>td:nth-child(2) {
+    display: block;
+    width: 240px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 6px;
+}
+
+.notice tr>td:nth-child(3) {
+    width: 55px;
+    font-size: 10px;
+}

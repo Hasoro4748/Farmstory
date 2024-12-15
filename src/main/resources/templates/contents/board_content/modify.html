@@ -1,0 +1,112 @@
+<link rel="stylesheet" th:href="@{/css/board.css}">
+
+<title th:text="'게시판 수정'">게시판 수정</title>
+<section class="modify">
+		<h3>글수정</h3>
+		<article>
+			<form th:action="@{'/article/modify/'+${cateNo}+'/'+${article.articleNo}(pg=${pg})}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
+				<input type="hidden" name="date" th:value="${article.date}">
+				<input type="hidden" name="regIp" th:value="${article.regIp}">
+				<input type="hidden" name="com" th:value="${article.com}">
+				<table>
+					<tr>
+						<td>제목</td>
+						<input type="hidden" id="fileListSize" th:value="${article.fileList.size()}" />
+						<input type="hidden" name="articleNo" th:value="${article.articleNo}" />
+						<input type="hidden" name="cateNo" th:value="${cate.cateNo}"/>
+						<td><input type="text" name="title" th:value="${article.title}" /></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td>
+							<textarea name="content">[[${article.content}]]</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>첨부</td>
+						<td>
+							<p style="margin-bottom: 6px; ">
+								최대 2개 파일 첨부 가능, 각 파일당 최대 10MB 까지 업로드
+							</p>
+							<th:block th:each="file :${article.fileList}">
+								<div class="fileContainer">
+								<a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>&nbsp;<span>[[${file.download}]]</span>회 다운로드
+								<a th:href="@{/file/delete/{fno}(fno=${file.fno})}" class="fileDeleteBtn">X</a>
+								</div>
+							</th:block>
+							<input type="file" name="files" class="file1" hidden/>
+							<input type="file" name="files" class="file2" hidden/>
+						</td>
+					</tr>
+				</table>
+				<div>
+					<a th:href="@{'/article/modify/' + ${cate.cateNo} + '/' + ${article.articleNo}(pg=${pg})}" class="btnCancel">취소</a>
+					<input type="submit"  class="btnWrite" value="수정완료">
+				</div>
+			</form>
+		</article>
+	</section>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		// Check if there are any files in article.fileList
+		let fileListSize = Number(document.getElementById('fileListSize').value);
+		// fileListSize로 일관성 유지
+
+		console.log(fileListSize);
+		if (fileListSize === 0) {
+			// If no files are attached, show the hidden file inputs
+			document.querySelector('input[class="file1"]').removeAttribute('hidden');
+			document.querySelector('input[class="file2"]').removeAttribute('hidden');
+		} else if (fileListSize === 1) {
+			// If one file is attached, show only one additional file input
+			document.querySelector('input[class="file1"]').removeAttribute('hidden');
+		}
+
+		// 파일 삭제 처리
+		const fileDeletedBtns = document.querySelectorAll('.fileDeleteBtn');
+		const deleteFileList = [];
+
+		fileDeletedBtns.forEach(function (deleteBtn, index) {
+			deleteBtn.addEventListener('click', function (e) {
+				alert('파일을 삭제하시겠습니까?');
+				e.preventDefault();
+				const fileElement = e.target.closest('div');
+				const fileHref= e.target.closest('a');
+				const fno = fileHref.getAttribute('href'); // 정규식에서 중복 제거
+				console.log(fno);
+				const fnoValue = fno.match(/\/file\/delete\/(\d+)/)[1];
+
+				console.log(fnoValue);
+				// 파일 링크 숨기기 및 삭제 목록에 추가
+				fileElement.style.display = 'none';
+				deleteFileList.push(fnoValue);
+				console.log(deleteFileList);
+
+				// 숨겨진 파일 입력 필드 나타내기
+				const fileInputs = document.querySelectorAll('input[type="file"]');
+				if (fileInputs[index]) {
+					fileInputs[index].removeAttribute('hidden');
+				}
+			});
+		});
+
+		const form = document.querySelector('form');
+		form.addEventListener('submit', function (e) {
+			if (deleteFileList.length > 0) {
+				deleteFileList.forEach(fno => {
+					const input = document.createElement('input');
+					input.type = 'hidden';
+					input.name = 'deleteFiles';
+					input.value = fno;
+					form.appendChild(input);
+				});
+			}
+		});
+
+		const cancelBtn = document.querySelector('.btnCancel');
+		cancelBtn.addEventListener('click', function (e) {
+			window.location.reload(); // 페이지 새로고침으로 변경 취소
+		});
+	});
+</script>

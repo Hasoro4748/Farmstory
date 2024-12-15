@@ -1,0 +1,87 @@
+        <main th:fragment="list">
+                <div id="section2_main">
+                  <div id="section2_title">관리자 메인</div>
+                  <div id="article_wrapper">
+                    <div id="article1">
+                      <div class="table_heading" id="prod_heading">
+                        <a id="prod_now">상품현황</a>
+                        <a th:href="@{/admin/product}" id="prod_more">+ 더보기</a>
+                      </div>
+                      <table id="m_prod_table">
+                        <tr>
+                          <th>상품번호</th>
+                          <th>상품명</th>
+                          <th>구분</th>
+                          <th>가격</th>
+                          <th>재고</th>
+                          <th>등록일</th>
+                        </tr>
+                          <tr th:each="product, i : ${productPageResponseDTO.productList.subList(0, 3)}">
+                              <td>[[${product.pNo}]]</td>
+                              <td>[[${product.pName}]]</td>
+                              <td>[[${product.prodCate.prodCateName}]]</td>
+                              <td>[[${product.price}]]</td>
+                              <td>[[${product.stock}]]</td>
+                              <td>[[${product.rdate}]]</td>
+                          </tr>
+                      </table>
+                    </div>
+                    <div id="article2">
+                      <div class="table_heading" id="order_heading">
+                        <a id="order_now">주문현황</a>
+                        <a th:href="@{/admin/a_order}" id="order_more">+ 더보기</a>
+                      </div>
+                      <table id="m_order_table">
+                        <tr>
+                          <th>주문번호</th>
+                          <th>상품명</th>
+                          <th>판매가격</th>
+                          <th>수량</th>
+                          <th>배송비</th>
+                          <th>합계</th>
+                          <th>주문자</th>
+                          <th>주문일</th>
+                        </tr>
+                          <tr th:each="order , i:${orderPageResponseDTO.orderDTOList.subList(0, 3)}">
+                              <td>[[${order.orderNo}]]</td>
+                              <td>[[${order.pName}]]</td>
+                              <td>[[${order.price}]]</td>
+                              <td>[[${order.totalQty}]]</td>
+                              <td>[[${order.price}]]</td>
+                              <td>[[${order.totalPrice}]]</td>
+                              <td>[[${order.name}]]</td>
+                              <td>[[${order.orderDate}]]</td>
+                          </tr>
+                      </table>
+                    </div>
+                    <div id="article3">
+                      <div class="table_heading" id="user_heading">
+                        <a id="user_now">회원현황</a>
+                        <a th:href="@{/admin/a_user}" id="user_more">+ 더보기</a>
+                      </div>
+                      <table id="m_user_table">
+                        <tr>
+                          <th>회원아이디</th>
+                          <th>이름</th>
+                          <th>닉네임</th>
+                          <th>휴대폰</th>
+                          <th>이메일</th>
+                          <th>등급</th>
+                          <th>회원가입일</th>
+                        </tr>
+                          <tr th:each="user , i:${userPageResponseDTO.getUserList().subList(0, 3)}">
+                              <td class="user-uid">[[${user.uid}]]</td>
+                              <td>[[${user.name}]]</td>
+                              <td>[[${user.nick}]]</td>
+                              <td>[[${user.email}]]</td>
+                              <td>[[${user.hp}]]</td>
+                              <td>2</td>
+                              <td>[[${user.regDate}]]</td>
+                          </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            </main>
+        </div>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <th:block layout:fragment="css">
+    <!-- 페이지별 CSS 한곳에 -->
+    <link rel="shortcut icon" th:href="@{/images/fav.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/introdcution.css}">
+    <link rel="stylesheet" th:if="${cate.cateGroup=='community'}" th:href="@{/css/community.css}">
+    <link rel="stylesheet" th:if="${cate.cateGroup=='croptalk'}" th:href="@{/css/croptalk.css}">
+<!--    <link rel="stylesheet" th:if="${cate.cateGroup=='introduction'}" th:href="@{/css/introduction.css}">-->
+    <link rel="stylesheet" th:if="${cate.cateGroup=='myinfo'}" th:href="@{/css/myinfo.css}">
+    <link rel="stylesheet" th:if="${cate.cateGroup=='user'}" th:href="@{/css/user.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/market_list.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/market_cart.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/market_view.css}">-->
+  </th:block>
+  <th:block layout:fragment="script"></th:block>
+</head>
+<body>
+<div class="wrapper">
+  <div th:replace="~{include/_header :: header}"></div>
+  <main id="main cf">
+   <section class="mainIn cf">
+     <div th:replace="~{aside/subbg.html}"></div>
+     <div th:replace="~{aside/aside.html}"></div>
+
+     <article class="article"><!-- .article start-->
+       <div class="articleIn">
+
+         <div th:if="${cate.cateName == 'login'}">
+           <div th:replace="~{contents/user/login.html}"></div>
+         </div>
+         <div th:if="${cate.cateName == 'terms'}">
+           <div th:replace="~{contents/user/terms.html}"></div>
+         </div>
+         <div th:replace="~{aside/nav.html}"></div>
+         <div th:if="${cate.cateName == 'register'}">
+           <div th:replace="~{contents/user/register.html}"></div>
+         </div>
+
+         <div th:if="${cate.cateGroup != 'myinfo'}">
+           <div th:replace="~{aside/nav.html}"></div>
+         </div>
+
+
+
+
+          <!--content부분-->
+         <div th:if="${content == 'list'}" >
+           <div th:replace="~{contents/board_content/list.html}"></div>
+         </div>
+         <div th:if="${content == 'view'}" >
+           <div th:replace="~{contents/board_content/view.html}"></div>
+         </div>
+         <div th:if="${content == 'write'}" >
+           <div th:replace="~{contents/board_content/write.html}"></div>
+         </div>
+         <div th:if="${content == 'modify'}" >
+           <div th:replace="~{contents/board_content/modify.html}"></div>
+         </div>
+         <!--팜스토리 소개-->
+         <div th:if="${cate.cateName =='direct'}">
+           <div th:replace="~{contents/introduction/direction.html}"></div>
+         </div>
+         <div th:if="${cate.cateName=='intro'}">
+           <div th:replace="~{contents/introduction/introduction.html}"></div>
+         </div>
+         <!--장보기-->
+         <div th:if="${cate.cateName=='cart'}">
+           <div th:replace="~{contents/market/cart.html}"></div>
+         </div>
+         <div th:if="${cate.cateName=='plist'}">
+           <div th:replace="~{contents/market/list.html}"></div>
+         </div>
+         <div th:if="${cate.cateName=='pview'}">
+           <div th:replace="~{contents/market/view.html}"></div>
+         </div>
+         <div th:if="${cate.cateName=='order'}">
+           <div th:replace="~{contents/market/order.html}"></div>
+         </div>
+         <div th:if="${cate.cateName=='myinfo'}">
+           <div th:replace="~{contents/user/myinfo.html}"></div>
+         </div>
+
+
+       </div><!--.articleIn-->
+     </article><!--.article-->
+
+   </section> <!--.mainIn-->
+  </main>
+
+  <footer th:replace="~{include/_footer :: footer}"></footer></div>
+</body>
+</html>

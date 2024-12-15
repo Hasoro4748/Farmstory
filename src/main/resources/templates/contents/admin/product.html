@@ -1,0 +1,125 @@
+
+<main th:fragment="product">
+  <script>
+    window.onload = function(){
+
+      document.addEventListener('click', function(e) {
+        const selectall = document.querySelector('.selectall');
+        const checkboxes = document.querySelectorAll('.checkbox');
+
+        // 전체 선택 체크박스 클릭 시
+        if (e.target.classList.contains('selectall')) {
+          console.log("SELECT ALL");
+          selectAll(e.target);
+        }
+        // 개별 체크박스 클릭 시
+        if (e.target.classList.contains('checkbox')) {
+          updateSelectAllCheckbox();
+          console.log("SELECT SOMETHING");
+        }
+        function selectAll(selectAllCheckbox) {
+          checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
+          });
+        }
+        function updateSelectAllCheckbox() {
+          const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+          selectall.checked = allChecked;
+        }
+        // 삭제 버튼 클릭 시
+        if (e.target.classList.contains('btnSD')) {
+          e.preventDefault();
+
+          const selectedCheckboxes = document.querySelectorAll('.checkbox:checked');
+          console.log(selectedCheckboxes);
+          let selectedIds = [];
+
+          for (let checkbox of selectedCheckboxes) {
+            const row = checkbox.closest('tr');
+            const productNo = parseInt(row.getElementsByClassName('pNo')[0].value,10);
+            console.log(productNo);
+            selectedIds.push(productNo);
+          }
+
+          if (selectedIds.length === 0) {
+            alert('삭제하려는 상품을 선택하세요.');
+            return;
+          }
+
+          if (!confirm('선택한 상품을 정말 삭제하시겠습니까?')) {
+            return;
+          }
+
+          fetch('/market/productDelete', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(selectedIds)
+          })
+                  .then(resp => resp.json())
+                  .then(data => {
+                    if (data.success) {
+                      alert('삭제되었습니다.');
+                      location.reload();
+                    } else {
+                      alert('삭제에 실패했습니다.');
+                    }
+                  })
+                  .catch(err => {
+                    console.error('Error:', err);
+                    alert('삭제 중 오류가 발생했습니다.');
+                  });
+        }//del
+      }); // EventListener END
+    }
+  </script>
+    <div id="section2_main">
+        <div id="section2_title">상품목록</div>
+        <div id="article_wrapper">
+          <div id="article1">
+            <table id="prod_table">
+              <tr class="p_tr">
+                <th><input type="checkbox" class="selectall"></th>
+                <th>사진</th>
+                <th>상품번호</th>
+                <th>상품명</th>
+                <th>구분</th>
+                <th>가격</th>
+                <th>재고</th>
+                <th>등록일</th>
+              </tr>
+              <tr class="p_tr2"  th:each="product , i:${productPageResponseDTO.productList}">
+                <td><input type="checkbox" class="checkbox"></td>
+                <td><img id="sample_img" th:src="@{'/uploads/product/'+${product.p_sName1}}" alt="sample"></td>
+                  <td>[[${product.pNo}]]</td>
+                  <td>[[${product.pName}]]</td>
+                 <td>[[${product.prodCate.prodCateName}]]</td>
+                <td>[[${product.price}]]</td>
+                <td>[[${product.stock}]]</td>
+                <td>[[${product.rdate}]]</td>
+                <input type="hidden" th:value="${product.pNo}" class="pNo"/>
+              </tr>
+            </table>
+          </div>
+          <div id="p_prod_heading">
+            <a href="#" id="p_prod_del" class="btnSD">선택삭제</a>
+            <a th:href="@{/category/admin/register}" id="p_prod_reg">상품등록</a>
+          </div>
+          <div id="list_num">
+
+            <th:block th:if="${productPageResponseDTO.prev}">
+              <a><</a>
+            </th:block>
+            <th:block th:each="num:${#numbers.sequence(productPageResponseDTO.start, productPageResponseDTO.end)}">
+              <a th:href="@{/admin/product(pg=${num})}" th:class="${num == productPageResponseDTO.pg} ? 'num current' : 'num'">&#91;[[${num}]]&#93;</a>
+            </th:block>
+            <th:block th:if="${productPageResponseDTO.next}">
+              <a>></a>
+            </th:block>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

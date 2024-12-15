@@ -1,0 +1,234 @@
+
+<title>장바구니</title>
+<script>
+
+  window.onload = function(){
+    function updateTotal() {
+      const selectedCheckboxes1 = document.querySelectorAll("input.checkbox:checked");
+      let totalItemCount = 0;
+      let totalProductPrice = 0;
+      let totalDiscount = 0;
+      let totalPoints = 0;
+      let maxDeliveryFee = 0;
+      let selectTotal = 0;
+      for (let checkbox of selectedCheckboxes1) {
+
+        const row = checkbox.closest('tr');
+        const quantity_column = parseInt(row.querySelector('.quantity-column').innerText.trim(), 10);
+        const discount_column = parseInt(row.querySelector('.discount-column').innerText.replace('%', '').trim(), 10);
+        const points_column = parseInt(row.querySelector('.points-column').innerText.replace('p', '').trim(), 10);
+        const price_column = parseInt(row.querySelector('.price-column').innerText.replace('원', '').trim(), 10);
+        const delivery = parseInt(row.getElementsByClassName('delivery')[0].value.trim(), 10);
+
+
+        // 합계 계산
+        const itemTotalPrice = quantity_column * price_column;
+        const itemDiscount = itemTotalPrice * (discount_column / 100);
+
+        totalItemCount += quantity_column;
+        totalProductPrice += itemTotalPrice;
+        totalDiscount += itemDiscount;
+        totalPoints += points_column;
+        maxDeliveryFee += delivery;
+        selectTotal += 1;
+      }
+      const totalOrderAmount = totalProductPrice - totalDiscount + maxDeliveryFee;
+      // UI 업데이트
+      document.getElementById('selectedTotal').innerText = "장바구니 목록(" +selectTotal + ")";
+      document.getElementById('total-item-count').innerText = totalItemCount;
+      document.getElementById('total-product-price').innerText = totalProductPrice + "원";
+      document.getElementById('total-discount').innerText = totalDiscount+ "원";
+      document.getElementById('total-delivery-fee').innerText = maxDeliveryFee+ "원";
+      document.getElementById('total-points').innerText = totalPoints +"p";
+      document.getElementById('total-order-amount').innerText = totalOrderAmount+ "원";
+    }
+    document.addEventListener('click', function(e) {
+      const selectall = document.querySelector('.selectall');
+      const checkboxes = document.querySelectorAll('.checkbox');
+
+      // 전체 선택 체크박스 클릭 시
+      if (e.target.classList.contains('selectall')) {
+        selectAll(e.target);
+        updateTotal();
+      }
+
+      // 개별 체크박스 클릭 시
+      if (e.target.classList.contains('checkbox')) {
+        updateSelectAllCheckbox();
+        updateTotal();
+      }
+
+      function selectAll(selectAllCheckbox) {
+        checkboxes.forEach(checkbox => {
+          checkbox.checked = selectAllCheckbox.checked;
+        });
+      }
+
+      function updateSelectAllCheckbox() {
+        const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        selectall.checked = allChecked;
+      }
+
+
+      // 삭제 버튼 클릭 시
+      if (e.target.classList.contains('btnSD')) {
+        e.preventDefault();
+
+        const selectedCheckboxes = document.querySelectorAll('.checkbox:checked');
+        console.log(selectedCheckboxes);
+        let selectedIds = [];
+
+        for (let checkbox of selectedCheckboxes) {
+          const row = checkbox.closest('tr');
+          const productNo = row.querySelector('.cartNo').value.trim();
+          selectedIds.push({
+            cartNo: productNo
+          });
+        }
+
+        if (selectedIds.length === 0) {
+          alert('삭제하려는 상품을 선택하세요.');
+          return;
+        }
+
+        if (!confirm('선택한 상품을 정말 삭제하시겠습니까?')) {
+          return;
+        }
+
+        fetch('/market/CartDelete', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(selectedIds)
+        })
+                .then(resp => resp.json())
+                .then(data => {
+                  if (data.success) {
+                    alert('삭제되었습니다.');
+                    location.reload();
+                  } else {
+                    alert('삭제에 실패했습니다.');
+                  }
+                })
+                .catch(err => {
+                  console.error('Error:', err);
+                  alert('삭제 중 오류가 발생했습니다.');
+                });
+      }//del
+    }); // EventListener END
+  };
+
+
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("submitBtn").addEventListener("click", function () {
+      const selectedItems = [];
+
+      // 체크된 항목만 선택
+      document.querySelectorAll("input.checkbox:checked").forEach(function (checkbox) {
+        const row = checkbox.closest("tr");
+        const cartNo = row.getElementsByClassName('cartNo')[0].value;
+        selectedItems.push(cartNo);
+      });
+
+      // AJAX로 서버에 전송
+      if (selectedItems.length > 0) {
+        // 새로운 form 요소 생성
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/market/CartToOrder';
+
+        // JSON 데이터를 숨겨진 input에 넣어서 전송
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'selectedItems'; // 컨트롤러에서 받을 key
+        hiddenField.value = JSON.stringify(selectedItems);  // cartNo 배열을 JSON 문자열로 변환
+        form.appendChild(hiddenField);
+
+        document.body.appendChild(form);
+        form.submit(); // form을 서버로 전송
+      } else {
+        alert('선택된 항목이 없습니다.');
+      }
+    });
+  });
+</script>
+<link rel="stylesheet" th:href="@{/css/market_cart.css}">
+  <div class="market_cart">
+    <h3 class="tb_tit" id="selectedTotal">장바구니 목록(0)</h3><!-- .tb_tit -->
+    <table class="tb1">
+      <colgroup>
+        <col style="width: 11%">
+        <col style="width: 5%">
+        <col style="width: 10%">
+        <col style="width: 15%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+      </colgroup>
+      <tr>
+        <th><input type="checkbox" class="selectall"/></th>
+        <th>이미지</th>
+        <th>종류</th>
+        <th>상품명</th>
+        <th>수량</th>
+        <th>할인</th>
+        <th>포인트</th>
+        <th>가격</th>
+        <th>소계</th>
+      </tr>
+      <tr th:if="${#lists.size('cartList') eq 0}">
+        <td colspan="9" class="td_first">장바구니에 상품이 없습니다.</td>
+      </tr>
+      <tr th:unless="${#lists.size('cartList') eq 0}" th:each="cart : ${cartList}">
+        <td><input type="checkbox" class="checkbox"/></td>
+        <td><img th:src="@{/uploads/product/}+${cart.productDTO.p_sName1}" alt="상품 이미지" /></td>
+        <td th:text="${cart.productDTO.prodCate.prodCateName}">과일</td>
+        <td th:text="${cart.productDTO.pName}">사과 500g</td>
+        <td class="quantity-column">[[${cart.cartProdQty}]]</td>
+        <td class="discount-column" th:text="${cart.productDTO.discount}+'%'">10%</td>
+        <td class="points-column" th:text="${cart.productDTO.point}+'p'">40p</td>
+        <td class="price-column" th:text="${cart.productDTO.price}">4,000</td>
+        <td><strong th:text="${cart.totalprice} + '원'">3,600</strong></td>
+        <input type="hidden" class="delivery" th:value="${cart.cart_delivery}">
+        <input type="hidden" name="cartNoInput" th:value="${cart.cartNo}" class="cartNo"/>
+      </tr>
+    </table><!-- .tb1 -->
+    <button class="btnSD">선택삭제</button>
+    <div class="order_final">
+      <table class="tb2">
+        <tr>
+          <th colspan="2">전체합계</th>
+        </tr>
+        <tr>
+          <td>상품수</td>
+          <td id="total-item-count">0</td>
+        </tr>
+        <tr>
+          <td>상품금액</td>
+          <td id="total-product-price">0</td>
+        </tr>
+        <tr>
+          <td>할인금액</td>
+          <td id="total-discount">0원</td>
+        </tr>
+        <tr>
+          <td>배송비</td>
+          <td id="total-delivery-fee">0원</td>
+        </tr>
+        <tr>
+          <td>포인트</td>
+          <td id="total-points">0원</td>
+        </tr>
+        <tr>
+          <td>전체주문금액</td>
+          <td id="total-order-amount">0</td>
+        </tr>
+      </table><!-- .tb2 -->
+      <button class="btn_order" id="submitBtn">주문하기</button>
+    </div><!-- .order_final -->
+
+  </div>

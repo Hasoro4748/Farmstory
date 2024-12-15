@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout2.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmStroy</title>
+</head>
+<body>
+
+    <div id="wrapper">
+        <header th:replace="~{include/_header.html}"></header>
+        <main id="main cf">
+            <section class="mainIn cf">
+                <!--     <div th:replace="aside/subbg.html :: sub_bg"></div>-->
+                <!--     <div th:replace="aside/aside_community :: aside"></div>-->
+                <article class="article"><!-- .article start-->
+                    <div class="articleIn">
+<!--                        <div th:replace="aside/nav"></div>-->
+
+                    </div><!--.articleIn-->
+                </article><!--.article-->
+            </section> <!--.mainIn-->
+        </main>
+
+        <footer th:replace="~{include/_footer.html}"></footer>
+    </div><!-- #wrapper -->
+    </body>
+    </html>
+        <!-- <%@ include file="../../_footer.jsp" %> -->

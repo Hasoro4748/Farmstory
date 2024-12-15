@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Load CSS fragment -->
+  <link rel="shortcut icon" th:href="@{/images/fav.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/css/reset.css}">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <script type="text/javascript" th:src="@{/js/utils.js}"></script>
+  <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=861eab31626b5ffc3da70a0341aad34e"></script>
+
+  <th:block th:switch="${cate.cateGroup}">
+    <link th:case="'introduction'" rel="stylesheet" th:href="@{/css/introduction.css}">
+    <link th:case="'community'" rel="stylesheet" th:href="@{/css/community.css}">
+    <link th:case="'croptalk'" rel="stylesheet" th:href="@{/css/croptalk.css}">
+    <link th:case="'myinfo'" rel="stylesheet" th:href="@{/css/myinfo.css}">
+    <link th:case="'user'" rel="stylesheet" th:href="@{/css/user.css}">
+
+  </th:block>
+
+  <link th:if="${cate.cateGroup != 'user'}" rel="stylesheet" th:href="@{/css/articleCommon.css}">
+
+  <!--  customization based on cateName -->
+  <th:block th:switch="${cate.cateName}">
+    <link th:case="'cart'" rel="stylesheet" th:href="@{/css/cart.css}">
+    <link th:case="'order'" rel="stylesheet" th:href="@{/css/order.css}">
+    <link th:case="'findid'" rel="stylesheet" th:href="@{/css/findid.css}">
+    <link th:case="'findresult'" rel="stylesheet" th:href="@{/css/findidresult.css}">
+    <link th:case="'findpass'" rel="stylesheet" th:href="@{/css/findpass.css}">
+    <link th:case="'changepass'" rel="stylesheet" th:href="@{/css/changepass.css}">
+  </th:block>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <header th:replace="~{include/_header :: header}"></header>
+
+  <!-- Main content -->
+  <main id="main" class="cf">
+    <section class="mainIn cf">
+      <!-- Sidebar -->
+      <div th:replace="~{aside/subbg.html}"></div>
+      <div th:replace="~{aside/aside.html}"></div>
+
+      <!-- Article -->
+      <article class="article">
+        <div class="articleIn">
+          <!-- Dynamic content rendering -->
+          <th:block th:replace="~{contents/dynamicContent :: content(${cate.cateGroup},${cate.cateName},${content})}"></th:block>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer th:replace="~{include/_footer :: footer}"></footer>
+</div>
+</body>
+</html>

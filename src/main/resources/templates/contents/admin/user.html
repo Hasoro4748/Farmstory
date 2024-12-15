@@ -1,0 +1,190 @@
+<main th:fragment="user">
+    <script>
+        window.onload = function(){
+
+            document.addEventListener('click', function(e) {
+                const selectall = document.querySelector('.selectall');
+                const checkboxes = document.querySelectorAll('.checkbox');
+
+                // 전체 선택 체크박스 클릭 시
+                if (e.target.classList.contains('selectall')) {
+                    console.log("SELECT ALL");
+                    selectAll(e.target);
+                }
+
+                // 개별 체크박스 클릭 시
+                if (e.target.classList.contains('checkbox')) {
+                    updateSelectAllCheckbox();
+                    console.log("SELECT SOMETHING");
+                }
+
+                function selectAll(selectAllCheckbox) {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                }
+
+                function updateSelectAllCheckbox() {
+                    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                    selectall.checked = allChecked;
+                }
+            }); // EventListener END
+        }
+    </script>
+        <div id="section2_main"  th:fragment="user">
+
+            <div id="section2_title">회원목록</div>
+            <div id="article_wrapper">
+                <div id="article1">
+                    <table id="u_prod_table">
+                        <tr>
+                            <th><input type="checkbox" class="selectall"></th>
+                            <th>아이디</th>
+                            <th>이름</th>
+                            <th>별명</th>
+                            <th>이메일</th>
+                            <th>휴대폰</th>
+                            <th>등급</th>
+                            <th>가입일</th>
+                            <th>확인</th>
+                        </tr>
+
+                        <tr th:each="user , i:${userPageResponseDTO.getUserList()}">
+                            <td><input type="checkbox" class="checkbox"></td>
+                            <td class="user-uid">[[${user.uid}]]</td>
+                            <td>[[${user.name}]]</td>
+                            <td>[[${user.nick}]]</td>
+                            <td>[[${user.email}]]</td>
+                            <td>[[${user.hp}]]</td>
+                            <td>
+
+                                    [[${user.role}]]
+
+                            </td>
+                            <td>[[${user.regDate}]]</td>
+                            <td>
+                                <button class="openModalBtn" data-bs-toggle="modal" data-bs-target="#confirmationModal" style="all: unset">[상세확인]</button>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div id="list_num">
+                    <th:block th:if="${userPageResponseDTO.prev}">
+                        <a><</a>
+                    </th:block>
+                    <th:block th:each="num:${#numbers.sequence(userPageResponseDTO.start, userPageResponseDTO.end)}">
+                        <a th:href="@{/admin/a_user(pg=${num})}" th:class="${num == userPageResponseDTO.pg} ? 'num current' : 'num'">&#91;[[${num}]]&#93;</a>
+                    </th:block>
+                    <th:block th:if="${userPageResponseDTO.next}">
+                        <a>></a>
+                    </th:block>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 모달 코드 -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">회원 상세확인</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <section class="myinfo">
+                        <form th:action="@{/user/register}" method="post">
+                            <table border="1">
+                                <caption>회원정보 설정</caption>
+                                <tr>
+                                    <td>아이디</td>
+                                    <td>
+                                        <input type="text" name="uid" id="modalUserId" class="inputUid" placeholder="아이디 입력" readonly/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>닉네임</td>
+                                    <td><input type="text" name="nick" id="modalUserNick" class="inputNick" placeholder="닉네임"/></td>
+
+                                </tr>
+                                <tr>
+                                    <td>회원등급</td>
+                                    <td>
+                                        <input type="text" name="role" id="modalUserRole" class="inputRole" placeholder="등급"/>
+                                        <span id="resultPass"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>회원가입날짜</td>
+                                    <td>
+                                        <input type="text" name="regdate" id="modalUserRegDate" class="inputRegDate" readonly/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table border="1">
+                                <caption>개인정보 수정</caption>
+                                <tr>
+                                    <td>이름</td>
+                                    <td>
+                                        <input type="text" name="name" id="modalUserName" class="inputName" placeholder="이름"/>
+                                        <span id="resultName"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>총 주문 금액</td>
+                                    <td>
+                                        <input type="text" name="orderPrice" class="inputNick" placeholder="총 주문금액"/>
+                                        <span id="resultNick"></span> <!--고마운분 뭐 이런거 출력-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>E-Mail</td>
+                                    <td>
+                                        <input type="email" name="email" id="modalUserEmail" class="inputEmail" placeholder="이메일 입력"/>
+                                        <button type="button" id="btnCheckEmail"  data-type="email" ><img th:src="@{/images/user/chk_auth.gif}" alt="인증번호 받기"/></button>
+                                        <span id="resultEmail"></span>
+                                        <div class="auth">
+                                            <input type="text" name="auth" class="inputEmailCode" placeholder="인증번호 입력"/>
+                                            <button type="button" id="btnCheckEmailCode"  ><img th:src="@{/images/user/chk_confirm.gif}" alt="확인"/></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>휴대폰</td>
+                                    <td>
+                                        <input type="text" name="hp" id="modalUserHp" class="inputHp" placeholder="휴대폰 입력"/>
+                                        <button type="button" id="btnCheckHp" data-type="hp"><img th:src="@{/images/user/chk_id.gif}" alt="중복확인"/></button>
+                                        <span id="resultHp"></span>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>주소</td>
+                                    <td>
+                                        <input type="text" name="zip" id="modalUserZip" placeholder="우편번호"/>
+                                        <button type="button" class="btnZip" onclick="postcode()"><img th:src="@{/images/user/chk_post.gif}" alt=""></button>
+                                        <input type="text" name="addr1" id="modalUserAddr1" placeholder="주소 검색"/>
+                                        <input type="text" name="addr2" id="modalUserAddr2" placeholder="상세주소 입력"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>회원탈퇴</td>
+                                    <td class="form_group quit">
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+
+                    </section>
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

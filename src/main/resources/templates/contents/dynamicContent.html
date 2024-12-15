@@ -1,0 +1,126 @@
+<!-- fragments/dynamicContent.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content(cateGroup,cateName, content)">
+    <!--introduction-->
+
+    <th:block th:if="${cateGroup =='introduction'}">
+        <div th:replace="~{aside/nav.html}"></div>
+        <th:block th:switch="${cateName}">
+            <div th:case="'intro'">
+                <div th:replace="~{contents/introduction/introduction.html}"></div>
+            </div>
+            <div th:case="'direct'">
+                <div th:replace="~{contents/introduction/direction.html}"></div>
+            </div>
+        </th:block>
+    </th:block>
+
+    <!-- Example for dynamic board content -->
+    <th:block th:if="${cateGroup == 'community' or cateGroup == 'croptalk' }">
+        <div th:replace="~{aside/nav.html}"></div>
+        <!-- Switch inside the board category for different content types like list, view, etc. -->
+        <th:block th:switch="${content}">
+            <div th:case="'list'">
+                <div th:replace="~{contents/board_content/list.html}"></div>
+            </div>
+            <div th:case="'cslist'">
+                <div th:replace="~{contents/board_content/cslist.html}"></div>
+            </div>
+            <div th:case="'view'">
+                <div th:replace="~{contents/board_content/view.html}"></div>
+            </div>
+            <div th:case="'write'">
+                <div th:replace="~{contents/board_content/write.html}"></div>
+            </div>
+            <div th:case="'cs_write'">
+                <div th:replace="~{contents/board_content/cs_write.html}"></div>
+            </div>
+            <div th:case="'csview'">
+                <div th:replace="~{contents/board_content/csview.html}"></div>
+            </div>
+            <div th:case="'modify'">
+                <div th:replace="~{contents/board_content/modify.html}"></div>
+            </div>
+        </th:block>
+    </th:block>
+
+
+    <!--event 부분-->
+    <th:block th:if="${cateGroup == 'event' }">
+        <div th:replace="~{aside/nav.html}"></div>
+        <div th:replace="~{contents/board_content/event.html}"></div>
+    </th:block>
+
+
+    <!--market 부분-->
+
+    <th:block th:if="${cateGroup =='market'}">
+        <div th:replace="~{aside/nav.html}"></div>
+        <th:block th:switch="${cateName}">
+            <th:block th:case="'cart'">
+                <div th:replace="~{contents/market/cart.html}"></div>
+            </th:block>
+            <th:block th:case="'plist'">
+                <div th:replace="~{contents/market/list.html}"></div>
+            </th:block>
+            <th:block th:case="'order'">
+                <div th:replace="~{contents/market/order.html}"></div>
+            </th:block>
+            <th:block th:case="'pview'">
+                <div th:replace="~{contents/market/view.html}"></div>
+            </th:block>
+        </th:block>
+    </th:block>
+
+
+    <!--user-->
+    <th:block th:if="${cateGroup  == 'user'}">
+        <th:block th:switch="${cateName}">
+            <th:block th:case="'login'">
+                <div th:replace="~{contents/user/login.html}"></div>
+            </th:block>
+            <th:block th:case="'terms'">
+                <div th:replace="~{contents/user/terms.html}"></div>
+            </th:block>
+            <th:block th:case="'register'">
+                <div th:replace="~{contents/user/register.html}"></div>
+            </th:block>
+            <th:block th:case="'findid'">
+                <div th:replace="~{contents/user/findid.html}"></div>
+            </th:block>
+            <th:block th:case="'findresult'">
+                <div th:replace="~{contents/user/findidresult.html}"></div>
+            </th:block>
+            <th:block th:case="'findpass'">
+                <div th:replace="~{contents/user/findpass.html}"></div>
+            </th:block>
+            <th:block th:case="'changepass'">
+                <div th:replace="~{contents/user/changepass.html}"></div>
+            </th:block>
+        </th:block>
+    </th:block><!--user 끝-->
+
+    <!--myinfo-->
+    <th:block th:if="${cateGroup  == 'myinfo'}">
+        <div th:replace="~{aside/nav.html}"></div>
+        <th:block th:switch="${cateName}">
+            <th:block th:case="'myinfo'">
+                <div th:replace="~{contents/myinfo/myinfo.html}"></div>
+            </th:block>
+            <th:block th:case="'cart'">
+                <div th:replace="~{contents/market/cart.html}"></div>
+            </th:block>
+            <th:block th:case="'orderitem'">
+                <div th:replace="~{contents/myinfo/orderitem.html}"></div>
+            </th:block>
+        </th:block>
+    </th:block>
+
+
+</div>
+
+</body>
+</html>

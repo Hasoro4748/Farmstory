@@ -1,0 +1,59 @@
+<link rel="stylesheet" th:href="@{/css/market_list.css}">
+<div class="market_list">
+  <ul class="tabs">
+    <li><a th:href="@{/market/plist}" th:class="${ProductPageResponseDTO.type eq null} ? 'tabs_item item item_current' : 'tabs_item item'" th:text="${ProductPageResponseDTO.type eq null} ? '전체('+ ${ProductPageResponseDTO.total} +')' : '전체'" >전체(10)</a></li>
+    <li><a th:href="@{/market/plist(type='1')}" th:class="${ProductPageResponseDTO.type eq '1'} ? 'tabs_item item item_current' : 'tabs_item item'" th:text="${ProductPageResponseDTO.type eq '1'} ? '과일('+ ${ProductPageResponseDTO.total} +')' : '과일'" >과일</a></li>
+    <li><a th:href="@{/market/plist(type='2')}" th:class="${ProductPageResponseDTO.type eq '2'} ? 'tabs_item item item_current' : 'tabs_item item'" th:text="${ProductPageResponseDTO.type eq '2'} ? '야채('+ ${ProductPageResponseDTO.total} +')' : '야채'" >야채</a></li>
+    <li><a th:href="@{/market/plist(type='3')}" th:class="${ProductPageResponseDTO.type eq '3'} ? 'tabs_item item item_current' : 'tabs_item item'" th:text="${ProductPageResponseDTO.type eq '3'} ? '곡류('+ ${ProductPageResponseDTO.total} +')' : '곡류'" >곡류</a></li>
+  </ul>
+  <table class="product_table">
+    <colgroup>
+      <col width="13.14%">    <!-- 이미지 -->
+      <col width="10.01%">    <!-- 종류 -->
+      <col width="40.93%">    <!-- 상품명 -->
+      <col width="12.02%">    <!-- 할인 -->
+      <col width="12.02%">    <!-- 포인트 -->
+      <col width="12.02%">    <!-- 판매가격 -->
+    </colgroup>
+    <thead>
+    <tr class="row">
+      <th>이미지</th>
+      <th>종류</th>
+      <th>상품명</th>
+      <th>할인</th>
+      <th>포인트</th>
+      <th>판매가격</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product, i:${ProductPageResponseDTO.getProductList}">
+      <td class="pic">
+        <a th:href="@{/market/pview/{pNo}(pNo=${product.pNo})}"><img th:src="@{/uploads/product/}+${product.p_sName1}" alt="상품 이미지"></a>
+      </td>
+      <td class="type" th:text="${product.prodCate.prodCateName}">분류</td>
+      <td class="pro_name">
+        <a th:href="@{/market/pview/{pNo}(pNo=${product.pNo})}" th:text="${product.pName}">상품이름</a>
+      </td>
+      <td class="sale" th:text="${product.discount} + '%'">할인률</td>
+      <td class="point" th:text="${product.point} + 'P'">포인트P</td>
+      <td class="price">
+        <strong th:text="${#numbers.formatDecimal(product.price * (1 - product.discount / 100.0),0,0)} + '원'">할인된 가격</strong>
+        <span class="original_price"  th:text="${product.price} + '원'">상품가격</span></td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="pages">
+    <th:block th:if="${ProductPageResponseDTO.prev}">
+      <a><</a>
+    </th:block>
+    <ul>
+      <th:block th:each="num:${#numbers.sequence(ProductPageResponseDTO.start, ProductPageResponseDTO.end)}">
+        <li><a th:if="${ProductPageResponseDTO.type == null}" th:href="@{/market/plist(pg=${num})}" th:class="${num == ProductPageResponseDTO.pg} ? 'current' : 'no'">&#91;[[${num}]]&#93;</a></li>
+        <li><a th:if="${ProductPageResponseDTO.type != null}" th:href="@{/market/plist(pg=${num}, type=${ProductPageResponseDTO.type})}" th:class="${num == ProductPageResponseDTO.pg} ? 'current' : 'no'">&#91;[[${num}]]&#93;</a></li>
+      </th:block>
+    </ul>
+    <th:block th:if="${ProductPageResponseDTO.next}">
+      <a>></a>
+    </th:block>
+  </div>
+</div>
