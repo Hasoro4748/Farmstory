@@ -1,0 +1,83 @@
+<main  th:fragment="register">
+    <div id="section2_main">
+        <div id="section2_title">상품등록</div>
+        <div id="article_wrapper">
+            <form id="uploadForm" th:action="@{/admin/register}" method="post" enctype="multipart/form-data">
+                <div id="article1">
+                    <table id="r_prod_table">
+                        <tr id="prod_name">
+                            <td>상품명</td>
+                            <td><input type="text" name="pName" id="input_pName"></td>
+                        </tr>
+                        <tr id="prod_category">
+                            <td>종류</td>
+                            <td>
+                                <select class="category" name="prodCateNo">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr id="prod_price">
+                            <td>가격</td>
+                            <td><input type="number" name="price" id="input_price" oninput="updatePoint()"></td>
+                        </tr>
+                        <tr id="prod_point">
+                            <td>포인트</td>
+                            <td><input type="number" name="point" id="input_point" readonly/>포인트는 가격의 1%</td>
+                        </tr>
+                        <tr id="prod_discount">
+                            <td>할인</td>
+                            <td>
+                                <select class="discount" name="discount">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr id="prod_delivery">
+                            <td>배송비</td>
+                            <td>
+                                <input type="radio" name="delivery" value="2000" checked>2,000원
+                                <input type="radio" name="delivery" value="3000">3,000원
+                                <input type="radio" name="delivery" value="5000">5,000원
+                                <input type="radio" name="delivery" value="0">무료
+                            </td>
+                        </tr>
+                        <tr id="prod_stock">
+                            <td>재고</td>
+                            <td><input type="number" name="stock" id="input_stock"></td>
+                        </tr>
+                        <tr id="prod_image">
+                            <td>상품이미지</td>
+                            <td>
+                                <a class="img_describe">상품목록 이미지(약 120 X 120)</a>
+                                <div>
+                                    <input type="file" class="search-input1" name="files1"  onchange="updateFileName(this, 'fileLabel1')"/>
+                                    <label id="fileLabel1">No file chosen</label>
+                                </div>
+                                <a class="img_describe">기본정보 이미지(약 240 X 240)</a>
+                                <div>
+                                    <input type="file" class="search-input2" name="files2"  onchange="updateFileName(this, 'fileLabel2')"/>
+                                    <label id="fileLabel2">No file chosen</label>
+                                </div>
+                                <a class="img_describe">상품설명 이미지(약 120 X 120)</a>
+                                <div>
+                                    <input type="file" class="search-input3" name="files3"  onchange="updateFileName(this, 'fileLabel3')"/>
+                                    <label id="fileLabel3">No file chosen</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr id="prod_etc">
+                            <td>기타</td>
+                            <td><textarea name="pDesc"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="r_prod_heading">
+                    <a href="#" id="prod_del">취소</a>
+                    <input type="submit" value="등록완료" id="prod_reg"/>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    </div>
+</main>
+</div>

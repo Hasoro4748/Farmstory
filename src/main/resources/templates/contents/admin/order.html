@@ -1,0 +1,126 @@
+<main  th:fragment="order">
+    <script>
+        window.onload = function(){
+
+            document.addEventListener('click', function(e) {
+                const selectall = document.querySelector('.selectall');
+                const checkboxes = document.querySelectorAll('.checkbox');
+
+                // 전체 선택 체크박스 클릭 시
+                if (e.target.classList.contains('selectall')) {
+                    console.log("SELECT ALL");
+                    selectAll(e.target);
+                }
+                // 개별 체크박스 클릭 시
+                if (e.target.classList.contains('checkbox')) {
+                    updateSelectAllCheckbox();
+                    console.log("SELECT SOMETHING");
+                }
+                function selectAll(selectAllCheckbox) {
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                }
+                function updateSelectAllCheckbox() {
+                    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+                    selectall.checked = allChecked;
+                }
+                // 삭제 버튼 클릭 시
+                if (e.target.classList.contains('btnSD')) {
+                    e.preventDefault();
+
+                    const selectedCheckboxes = document.querySelectorAll('.checkbox:checked');
+                    console.log(selectedCheckboxes);
+                    let selectedIds = [];
+
+                    for (let checkbox of selectedCheckboxes) {
+                        const row = checkbox.closest('tr');
+                        const orderNO = parseInt(row.getElementsByClassName('orderNo')[0].value,10);
+                        console.log(orderNO);
+                        selectedIds.push(orderNO);
+                    }
+
+                    if (selectedIds.length === 0) {
+                        alert('삭제하려는 주문을 선택하세요.');
+                        return;
+                    }
+
+                    if (!confirm('선택한 주문을 정말 삭제하시겠습니까?')) {
+                        return;
+                    }
+
+                    fetch('/admin/orderDelete', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(selectedIds)
+                    })
+                        .then(resp => resp.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('삭제되었습니다.');
+                                location.reload();
+                            } else {
+                                alert('삭제에 실패했습니다.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Error:', err);
+                            alert('삭제 중 오류가 발생했습니다.');
+                        });
+                }//del
+            }); // EventListener END
+        }
+    </script>
+    <div id="section2_main">
+        <div id="section2_title">주문목록</div>
+        <div id="article_wrapper">
+            <div id="article1">
+                <table id="o_prod_table">
+                    <tr>
+                        <th><input type="checkbox" class="selectall"></th>
+                        <th>주문번호</th>
+                        <th>상품명</th>
+                        <th>판매가격</th>
+                        <th>수량</th>
+                        <th>배송비</th>
+                        <th>합계</th>
+                        <th>주문자</th>
+                        <th>주문일</th>
+                        <th>확인</th>
+                    </tr>
+                    <tr th:each="order , i:${orderPageResponseDTO.orderDTOList}">
+                        <td><input type="checkbox" class="checkbox"></td>
+                        <td>[[${order.orderNo}]]</td>
+                        <td>[[${order.pName}]]</td>
+                        <td>[[${order.price}]]</td>
+                        <td>[[${order.totalQty}]]</td>
+                        <td>[[${order.delivery}]]</td>
+                        <td>[[${order.totalPrice}]]</td>
+                        <td>[[${order.name}]]</td>
+                        <td>[[${order.orderDate}]]</td>
+                        <input type="hidden" th:value="${order.orderNo}" class="orderNo"/>
+                        <td><a href="#">[상세확인]</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="o_prod_heading">
+                <a href="#" id="prod_del" class="btnSD">선택삭제</a>
+            </div>
+            <div id="list_num">
+                <th:block th:if="${orderPageResponseDTO.prev}">
+                    <a><</a>
+                </th:block>
+                <th:block th:each="num:${#numbers.sequence(orderPageResponseDTO.start, orderPageResponseDTO.end)}">
+                    <a th:href="@{/admin/a_order(pg=${num})}" th:class="${num == orderPageResponseDTO.pg} ? 'num current' : 'num'">&#91;[[${num}]]&#93;</a>
+                </th:block>
+                <th:block th:if="${orderPageResponseDTO.next}">
+                    <a>></a>
+                </th:block>
+            </div>
+        </div>
+    </div>
+    </div>
+</main>
+</div>

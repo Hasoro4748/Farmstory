@@ -1,0 +1,64 @@
+
+<title>장바구니</title>
+<link rel="stylesheet" th:href="@{/css/market_cart.css}">
+  <div class="market_cart">
+    <h3 class="tb_tit">장바구니 전체(10)</h3><!-- .tb_tit -->
+    <table class="tb1">
+      <colgroup>
+        <col style="width: 11%">
+        <col style="width: 5%">
+        <col style="width: 10%">
+        <col style="width: 15%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+        <col style="width: 10%">
+      </colgroup>
+      <tr>
+        <th>주문번호</th>
+        <th>이미지</th>
+        <th>상품명</th>
+        <th>판매가격</th>
+        <th>수량</th>
+        <th>합계</th>
+        <th>주문자</th>
+        <th>주문일</th>
+        <th>확인</th>
+      </tr>
+      <th:block th:if="${orderPageResponseDTO.orderDTOList.size() < 1}">
+        <tr>
+          <td colspan="9" class="td_first">장바구니에 상품이 없습니다.</td>
+        </tr>
+      </th:block>
+      <th:block th:if="${orderPageResponseDTO.orderDTOList.size() >= 1}">
+        <tr th:each="order , i:${orderPageResponseDTO.orderDTOList}">
+          <td>[[${order.orderNo}]]</td>
+          <td><img id="sample_img" th:src="@{'/uploads/product/'+${order.p_sName1}}" alt="sample"></td>
+          <td>[[${order.pName}]]</td>
+          <td>[[${order.price}]]</td>
+          <td>[[${order.totalQty}]]</td>
+          <td>[[${order.totalPrice}]]</td>
+          <td>[[${order.name}]]</td>
+          <td>[[${order.orderDate}]]</td>
+          <td>확인</td>
+        </tr>
+      </th:block>
+      </table><!-- .tb1 -->
+      <div id="list_num">
+        <div class="paging">
+          <th:block th:if="${orderPageResponseDTO.prev}">
+            <a><</a>
+          </th:block>
+          <ul>
+            <th:block th:each="num:${#numbers.sequence(orderPageResponseDTO.start, orderPageResponseDTO.end)}">
+              <li><a th:href="@{/myinfo/orderitem(pg=${num})}" th:class="${num == orderPageResponseDTO.pg} ? 'current' : 'no'">[[${num}]]</a></li>
+            </th:block>
+          </ul>
+          <th:block th:if="${orderPageResponseDTO.next}">
+            <a>></a>
+          </th:block>
+        </div>
+      </div>
+  </div>
+

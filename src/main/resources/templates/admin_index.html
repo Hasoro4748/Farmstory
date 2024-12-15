@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<link rel="stylesheet" th:href="@{/css/admin_common.css}">
+<link rel="stylesheet" th:href="@{/css/admin_header.css}">
+<link rel="stylesheet" th:href="@{/css/admin_footer.css}">
+<link rel="stylesheet" th:href="@{/css/admin_sidebar.css}">
+<link rel="stylesheet" th:href="@{/css/admin_list.css}">
+<link rel="stylesheet" th:href="@{/css/admin_order.css}">
+<link rel="stylesheet" th:href="@{/css/admin_register.css}">
+<link rel="stylesheet" th:href="@{/css/admin_user.css}">
+<link rel="stylesheet" th:href="@{/css/admin_product.css}">
+<link rel="stylesheet" th:href="@{/css/admin_myinfo.css}">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" th:src="@{/js/admin/prod_register.js}"></script>
+<script type="text/javascript" th:src="@{/js/admin/setting.js}"></script>
+
+<style>
+  .modal-dialog {
+    max-width: 650px; /* 원하는 너비로 설정 */
+    width: 100%; /* 100% 너비를 적용 */
+  }
+</style>
+
+<body>
+<!-- header -->
+<header th:replace="~{include/admin_header::header}"></header>
+<!-- sidebar -->
+<div th:replace="~{include/admin_sidebar::sidebar}"></div>
+<!-- content -->
+  <th:block th:switch="${cate.cateName}">
+    <th:block th:case="'main'" th:include="~{contents/admin/list::list}"></th:block>
+    <th:block th:case="'product'" th:include="~{contents/admin/product::product}"></th:block>
+    <th:block th:case="'a_order'" th:include="~{contents/admin/order::order}"></th:block>
+    <th:block th:case="'register'" th:include="~{contents/admin/register::register}"></th:block>
+    <th:block th:case="'a_user'" th:include="~{contents/admin/user::user}"></th:block>
+  </th:block>
+<!-- footer -->
+<footer th:replace="~{include/admin_footer::footer}"></footer>
+<script type="text/javascript" th:src="@{/js/admin/user_list.js}"></script>
+</body>
+</html>

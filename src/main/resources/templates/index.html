@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:th="http://www.thymeleaf.org">
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" -->
+<!--      layout:decorate="~{/layouts/layout.html}">-->
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" th:href="@{/images/fav.ico}" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/css/reset.css}">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/mainIndex.css}">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmStroy</title>
+</head>
+<body>
+<div id="wrapper">
+  <header th:replace="~{include/_header.html}"></header>
+  <script>
+    window.onload = function () {
+      const slides = document.getElementsByClassName("slideImg")
+      let current = 0;
+      let nextCurrent = 1;
+
+      setInterval(() => {
+        slides[current].style.left = '-100%';
+
+        current++;
+
+        current = current % 3;
+
+        slides[current].style.zIndex = 3;
+        slides[current].style.left = '0';
+        nextCurrent = (current + 1) % 3;
+
+        slides[nextCurrent].style.zIndex = 1;
+        slides[nextCurrent].style.left = '100%';
+      }, 4000);
+    }
+    function alertAndRedirect(error, redirectUrl) {
+      // 링크 기본 동작 막기
+      error.preventDefault();
+      // 알림창 띄우기
+      alert('로그인이 필요합니다.');
+      // alert 확인 후 리다이렉트
+      window.location.href = redirectUrl;
+    }
+  </script>
+  <main id="main cf">
+    <section class="mainIn cf">
+        <section class="main_adver">
+          <img th:src="@{/images/main_slide_img_tit.png}" alt="사람과 자연을 사랑하는 팜스토리 건강한 흙과 친환경 작물만을 연구합니다.">
+          <ul class="slideImgs">
+            <li class="slideImg">
+              <img th:src="@{/images/main_slide_img1.jpg}" alt="사람과 자연을 사랑하는 팜스토리 건강한 흙과 친환경 작물만을 연구합니다.">
+            </li>
+            <li class="slideImg">
+              <img th:src="@{/images/main_slide_img2.jpg}" alt="사람과 자연을 사랑하는 팜스토리 건강한 흙과 친환경 작물만을 연구합니다.">
+            </li>
+            <li class="slideImg">
+              <img th:src="@{/images/main_slide_img3.jpg}" alt="사람과 자연을 사랑하는 팜스토리 건강한 흙과 친환경 작물만을 연구합니다.">
+            </li>
+          </ul>
+          <div class="sideAd">
+            <img th:src="@{/images/main_banner_txt.png}" alt="Grand Open">
+            <img th:src="@{/images/main_banner_tit.png}" alt="팜스토리 오픈기념 30%할인">
+            <img th:src="@{/images/main_banner_img.png}" alt="과일">
+            <img th:src="@{/images/main_banner_bg.jpg}" alt="Grand Open">
+          </div>
+        </section>
+
+        <!-- 장보기 -->
+        <div class="main_shopping">
+          <img th:src="@{/images/main_market_tit.png}" alt="장보기 베스트 상품을 소개합니다.">
+          <article class="shopping_list" th:each="product:${products}">
+            <!-- @@@상품 임시데이터@@@ -->
+            <a th:href="@{/market/pview/{pNo}(pNo=${product.pNo})}">
+              <div class="product">
+                <img th:src="@{/uploads/product/}+${product.p_sName1}" alt="상품이미지">
+                <p class="protype" th:text="${product.prodCate.prodCateName}">과일</p>
+                <p th:text="${product.pName}">사과</p>
+                <div class="pricediscount">
+                  <span class="price" th:text="${product.price} + '원'">900원</span>
+                  <span class="discount" th:text="${product.discount} + '%↓'">80%↓</span>
+                </div>
+                <p class="priceResult" th:text="${#numbers.formatDecimal(product.price * (1 - product.discount / 100.0),0,0)} + '원'">3000원</p>
+              </div>
+            </a>
+            <!-- @@@상품 임시데이터 끝@@@ -->
+          </article>
+        </div>
+    <!-- 오늘의식단, 나도요리사 -->
+    <div class="main_comm_banner">
+      <a th:href="@{/article/community/menu(content= 'list')}">
+        <img th:src="@{/images/main_banner_sub1_tit.png}" alt="팜스토리 오늘의 식단">
+      </a>
+
+      <a th:href="@{/article/community/chef(content='list')}">
+        <img th:src="@{/images/main_banner_sub2_tit.png}" alt="팜스토리 나도 요리사">
+      </a>
+    </div>
+    <div class="main_container">
+      <!-- 텃밭가꾸기 -->
+      <div class="main_crop_list">
+        <a>
+          <img th:src="@{/images/main_latest1_tit.png}" alt="텃밭 가꾸기">
+        </a>
+        <img th:src="@{/images/main_latest1_img.jpg}" alt="텃밭 가꾸기 이미지">
+        <table border="0" class="commuList">
+          <tbody>
+          <!-- @@@텃밭가꾸기 임시 리스트@@@ -->
+          <tr th:each="garden:${gardens}">
+            <td>
+              <img th:src="@{/images/main_latest_icon.gif}" alt=">">
+            </td>
+            <td>
+              <a th:href="@{'/article/croptalk/grow/'+${garden.articleNo}(content='view')}">[[${garden.title}]]</a>
+            </td>
+            <td>[[${#strings.substring(garden.date,0,10)}]]</td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 귀농학교 -->
+      <div class="main_crop_list">
+        <a>
+          <img th:src="@{/images/main_latest2_tit.png}" alt="귀농학교">
+        </a>
+        <img th:src="@{/images/main_latest2_img.jpg}" alt="귀농학교 이미지">
+        <table border="0" class="commuList">
+          <tbody>
+          <!-- @@@귀농학교 임시 리스트@@@ -->
+          <tr th:each="school:${schools}">
+            <td>
+              <img th:src="@{/images/main_latest_icon.gif}" alt=">">
+            </td>
+            <td>
+              <a th:href="@{'/article/croptalk/school/'+${school.articleNo}(content='view')}">[[${school.title}]]</a>
+            </td>
+            <td>[[${#strings.substring(school.date,0,10)}]]</td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 농작물 이야기 -->
+      <div class="main_crop_list">
+        <a>
+          <img th:src="@{/images/main_latest3_tit.png}" alt="농작물 이야기">
+        </a>
+        <img th:src="@{/images/main_latest3_img.jpg}" alt="농작물 이야기 이미지">
+        <table border="0" class="commuList">
+          <tbody>
+          <!-- @@@농작물이야기 임시 리스트@@@ -->
+          <tr th:each="story:${storys}">
+            <td>
+              <img th:src="@{/images/main_latest_icon.gif}" alt=">">
+            </td>
+            <td>
+              <a th:href="@{'/article/croptalk/story/'+${story.articleNo}(content='view')}">[[${story.title}]]</a>
+            </td>
+            <td>[[${#strings.substring(story.date,0,10)}]]</td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <img th:src="@{/images/main_cs_top_line.png}">
+    <div class="info">
+      <div class="introduce">
+        <img th:src="@{/images/main_sub2_cs_tit.png}" alt="고객센터 안내">
+        <div class="tel">
+          <img th:src="@{/images/main_sub2_cs_img.png}" alt="전화 이미지">
+          <img th:src="@{/images/main_sub2_cs_txt.png}" alt="1666-777 FAX:02-123-4567">
+          <p class="times">
+            평일: AM 09:00 ~ PM 06:00<br>
+            점심: PM 12:00 ~ PM 01:00<br>
+            토, 일요일, 공휴일 휴무
+          </p>
+        </div>
+        <div class="commBtns">
+
+          <th:block sec:authorize="isAuthenticated()">
+            <!--                            amdin이 아닌경우-->
+            <th:block  th:if="${!#authorization.expression('hasRole(''ADMIN'')')}"><a th:href="@{'/article/'+${#authentication.principal.user.uid}+'/community/cs'(content= 'cslist')}" ><img th:src="@{/images/main_sub2_cs_bt1.png}" alt="1:1고객문의"></a></th:block>
+            <!--                            admin인 경우 -->
+            <th:block th:unless="${!#authorization.expression('hasRole(''ADMIN'')')}"><a th:href="@{/article/admin/community/cs(content= 'cslist')}" ><img th:src="@{/images/main_sub2_cs_bt1.png}" alt="1:1고객문의"></a></th:block>
+          </th:block>
+          <!--                        //로그인 안된경우 -->
+          <th:block  sec:authorize="isAnonymous()">
+            <a th:href="@{/article/cummunity/cs}"  onclick="alertAndRedirect(event, '/category/user/login');"><img th:src="@{/images/main_sub2_cs_bt1.png}" alt="1:1고객문의"></a>
+          </th:block>
+
+
+
+
+
+<!--          <a th:href="@{/category/community/cs}">-->
+<!--            <img th:src="@{/images/main_sub2_cs_bt1.png}" alt="1:1고객문의">-->
+<!--          </a>-->
+          <a th:href="@{/article/community/faq(content='list')}">
+            <img th:src="@{/images/main_sub2_cs_bt2.png}" alt="자주묻는 질문">
+          </a>
+          <a th:href="@{/category/myinfo/orderitem}">
+            <img th:src="@{/images/main_sub2_cs_bt3.png}" alt="배송조회">
+          </a>
+        </div>
+      </div>
+      <div class="bank">
+        <img th:src="@{/images/main_sub2_account_tit.png}" alt="계좌안내">
+        <p class="account">
+          기업은행 123-456789-01-01-012
+          <br>
+          국민은행 01-1234-56789
+          <br>
+          우리은행 123-456789-01-01-012
+          <br>
+          하나은행 123-456789-01-01
+          <br>
+          예 금 주 (주)팜스토리
+        </p>
+      </div>
+      <div class="notice">
+        <img th:src="@{/images/main_sub2_notice_tit.png}" alt="공지사항">
+        <table border="0">
+          <tbody>
+          <tr th:each="notice:${notices}">
+            <td>
+              ·
+            </td>
+            <td>
+              <a th:href="@{'/article/community/notice/'+${notice.articleNo}(content='view')}">[[${notice.title}]]</a>
+            </td>
+            <td>
+              [[${#strings.substring(notice.date,0,10)}]]
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </section>
+  </main>
+  <footer th:replace="~{include/_footer.html}"></footer>
+</div>
+</body>
+
+</html>

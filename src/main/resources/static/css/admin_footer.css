@@ -1,0 +1,23 @@
+.footer_wrapper {
+    display: flex;
+    width: 980px;
+    height: 41px;
+    background-color: #353535;
+    margin-top: 10px;
+}
+
+footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+}
+#version {
+    margin-left: 12px;
+}
+
+#copyright {
+    margin-right: 12px;
+}

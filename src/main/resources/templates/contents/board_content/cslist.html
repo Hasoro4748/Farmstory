@@ -1,0 +1,85 @@
+<link rel="stylesheet" th:href="@{/css/board.css}">
+
+<section class="list">
+                    <div id="search_input">
+                        <h3 class="listTit">글목록</h3>
+                    </div>
+                        <article>
+                            <table border="0">
+                                <tr>
+                                    <th>번호</th>
+                                    <th>제목</th>
+                                    <th>글쓴이</th>
+                                    <th>날짜</th>
+                                    <th>처리여부</th>
+                                    <th>조회</th>
+                                </tr>
+                                <th:block th:if="${pageResponseDTO.getDtoList() == null || pageResponseDTO.getDtoList().size() == 0  }" >
+                                   <tr>
+                                       <td colspan="5" class="td_first">일치하는 내용이 없습니다.</td>
+                                   </tr>
+                                </th:block>
+
+
+                                <tr th:each="article,i:${pageResponseDTO.getDtoList()}">
+                                    <td>[[${pageResponseDTO.startNo -i.index}]]</td>
+                                    <td>
+                                        <a th:href="@{'/article/504/' + ${article.csNo}(content='csview',pg=${pageResponseDTO.pg})}">
+                                            [[${article.title}]][[ '[' + ${article.comment} + ']' ]]
+                                        </a>
+
+                                    </td>
+                                    <td>[[${article.nick}]]</td>
+                                    <td>[[${#strings.substring(article.createdate,0,10)}]]</td>
+                                    <td>[[${article.isCompleted} ? '완료' : '처리중']]</td>
+                                    <td>[[${article.hit}]]</td>
+                                </tr>
+                                    <!-- 한번 반복할때마다 pageStartNum을 1씩 차감 -->
+                            </table>
+                        </article>
+                        <!-- 페이지 네비게이션 -->
+                        <div class="paging" th:if="${#authentication.principal.user.role !='ADMIN'}">
+                            <th:block th:if="${pageResponseDTO.prev}">
+                                <a th:if="${pageResponseDTO.keyword == null }" th:href="@{'/article/' + ${pageResponseDTO.uid} + '/community/cs'+(content='cslist',pg=${pageResponseDTO.start -1 })}" class="prev" >이전</a>
+                            </th:block>
+                            <th:block th:if="${pageResponseDTO.start < pageResponseDTO.end}">
+                                <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start,pageResponseDTO.end)}">
+                                    <a  th:if="${pageResponseDTO.keyword == null}" th:href="@{'/article/{uid}/community/cs'(uid=${pageResponseDTO.uid}, content='cslist', pg=${num})}" th:class="${num == pageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>
+                                </th:block>
+                            </th:block>
+
+
+
+
+
+
+
+                            <th:block th:if="${pageResponseDTO.next}">
+                                <a th:if="${pageResponseDTO.keyword == null}" th:href="@{/article/admin/community/cs(content='cslist',pg=${pageResponseDTO.end +1 })}" class="next" >다음</a>
+
+                            </th:block>
+                        </div>
+                        <div class="paging" th:unless="${#authentication.principal.user.role !='ADMIN'}">
+                            <th:block th:if="${pageResponseDTO.prev}">
+                                <a th:if="${pageResponseDTO.keyword == null }" th:href="@{/article/admin/community/cs(content='cslist',pg=${pageResponseDTO.start -1 })}" class="prev" >이전</a>
+                            </th:block>
+                            <th:block th:if="${pageResponseDTO.start < pageResponseDTO.end}">
+                                <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start,pageResponseDTO.end)}">
+                                    <a  th:if="${pageResponseDTO.keyword == null}" th:href="@{/article/admin/community/cs(content='cslist', pg=${num})}" th:class="${num == pageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>
+                                </th:block>
+                            </th:block>
+
+                            <th:block th:if="${pageResponseDTO.next}">
+                                <a   th:if="${pageResponseDTO.keyword == null}" th:href="@{/article/admin/community/cs(content='cslist',pg=${pageResponseDTO.end +1 })}" class="next" >다음</a>
+                            </th:block>
+                        </div>
+                        <!-- 글쓰기 버튼 -->
+
+                            <a th:href="@{'/article/' + ${#authentication.principal.user.uid} + '/community/cs?content=cs_write'}"
+                               class="btnWrite">
+                                글쓰기
+                            </a>
+
+
+
+</section>

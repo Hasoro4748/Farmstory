@@ -1,0 +1,51 @@
+<link rel="stylesheet" th:href="@{/css/board.css}">
+
+<section class="write" >
+                	<h3>글쓰기</h3>
+                	<article>
+                        <form th:action="@{'/article/' + ${#authentication.principal.user.uid} + '/cs/writer'}" method="post" enctype="multipart/form-data"  onsubmit="return validateForm()">
+                            <input type="hidden" name="writer" th:value="${#authentication.principal.user.uid}">
+                            <input type="hidden" name="nick" th:value="${#authentication.principal.user.nick}">
+                            <select name="inquiry" id="inquiry">
+                                <option value="0" selected>상품문의</option>
+                                <option value="1">배송문의</option>
+                                <option value="2">반품 및 교환문의</option>
+                                <option value="3">환불문의</option>
+                                <option value="4">기타문의</option>
+                            </select>
+                            <table>
+                                <tr>
+                                    <td>제목</td>
+                                    <td><input type="text" name="title" placeholder="제목을 입력하세요."/></td>
+                                </tr>
+                                <tr>
+                                    <td>내용</td>
+                                    <td>
+                                        <textarea name="content"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>전달받을 연락처 </td>
+                                    <td>
+                                        <input type="email" name="email" placeholder="이메일를 입력하세요"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>첨부</td>
+                                    <td>
+                                        <p style="margin-bottom: 6px; ">
+                                            최대 2개 파일 첨부 가능, 각 파일당 최대 10MB 까지 업로드
+                                        </p>
+                                        <input type="file" name="files"/>
+                                        <input type="file" name="files"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>
+                                <a th:href="@{(content='cs_list')}" class="btnCancel">취소</a>
+                                <input type="submit"  class="btnWrite" value="작성완료">
+                            </div>
+                        </form>
+                    </article>
+                 </section>
+                   

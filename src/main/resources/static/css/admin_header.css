@@ -1,0 +1,34 @@
+/*헤더*/
+.header_wrapper {
+  width: 980px;
+  height: 60px;
+}
+header {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  background-image: url("/static/admin_images/admin_bg.jpg");
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*헤더 로고*/
+#logo {
+  width: 170px;
+  height: 32px;
+  margin-left: 10px;
+}
+
+.home {
+  position: absolute;
+  top: 13px;
+  right: 12px;
+}
+
+.home > a {
+  color: white  !important;
+  font-style: inherit;
+  font-size: 12px;
+}

@@ -1,0 +1,10 @@
+.aside_bg .cate_lnb1 li .lnb1{
+    position: absolute; left: 0; top:107px; 
+    text-indent: -9999px; display: block; width: 176px; height: 29px; 
+    background: url('../images/sub_cate4_lnb1.png') no-repeat; 
+}
+
+.aside_bg .cate_lnb1 li .lnb1:hover{background: url('../images/sub_cate4_lnb1_ov.png') no-repeat;  opacity: 50%;}
+.aside_bg .cate_lnb1 li .lnb1.active{background: url('../images/sub_cate4_lnb1_ov.png') no-repeat;}
+
+

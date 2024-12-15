@@ -1,0 +1,12 @@
+<div class="header_wrapper" th:fragment="header" th:style="'background-image:url('+ @{/images/admin/admin_bg.jpg} +');'">
+    <header>
+        <a th:href="@{/admin/main}" id="logo">
+            <img th:src="@{/images/admin/admin_logo.jpg}" alt="admin_logo"/>
+        </a>
+        <div class="home">
+            <a th:href="@{/(group='product',cate='list')}">HOME | </a>
+            <a th:href="@{/user/logout}">로그아웃 | </a>
+            <a th:href="@{/article/admin/community/cs(content= 'cslist')}">고객센터</a>
+        </div>
+    </header>
+</div>

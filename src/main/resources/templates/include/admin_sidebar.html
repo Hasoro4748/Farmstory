@@ -1,0 +1,31 @@
+<div class="main_wrapper" th:fragment="sidebar">
+    <div id="section1" >
+        <div id="section1_head">
+          <a>주요기능</a>
+        </div>
+        <div id="section1_menu">
+          <ul id="prod_manage">
+            상품관리
+            <div>
+              <li id="prod_list">
+                <a class="link"  th:href="@{/admin/product}">상품목록</a>
+              </li>
+              <li id="prod_register">
+                <a class="link" th:href="@{/category/admin/register}">상품등록</a>
+              </li>
+            </div>
+          </ul>
+          <ul id="order_manage">
+            주문관리
+            <li id="order_list">
+              <a class="link" th:href="@{/admin/a_order}">주문목록</a>
+            </li>
+          </ul>
+          <ul id="user_manage">
+            회원관리
+            <li id="user_list">
+              <a class="link" th:href="@{/admin/a_user}">회원목록</a>
+            </li>
+          </ul>
+        </div>
+</div>
